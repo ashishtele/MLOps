@@ -6,6 +6,7 @@ MLOps Toy Example End to End
 You might find below links useful
 ==============================
 1. [Connect VSCode to Git](https://www.youtube.com/watch?v=3Tn58KQvWtU&ab_channel=DevWorld)
+2. [MLFlow Port](https://stackoverflow.com/questions/63255631/mlflow-invalid-parameter-value-unsupported-uri-mlruns-for-model-registry-s)
 
 Project Organization
 ------------
