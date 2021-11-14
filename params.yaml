@@ -31,3 +31,6 @@ model_webapp_dir: webapp/model_webapp_dir/model.joblib
 model_monitor:
   target_col_name: target
   monitor_dashboard_html: reports/data_and_target_drift_dashboard.html
+
+Heroku:
+  0d885ae0-6fc4-447d-87d5-07e39c8d864f
