@@ -1,0 +1,15 @@
+artifact_uri: ./mlruns/1/933efffeaf2446a3987ef471fdee1450/artifacts
+end_time: 1636859563014
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: 933efffeaf2446a3987ef471fdee1450
+run_uuid: 933efffeaf2446a3987ef471fdee1450
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1636859535636
+status: 4
+tags: []
+user_id: ashis
