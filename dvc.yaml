@@ -7,6 +7,15 @@ stages:
     outs:
     - data/raw/train.csv
   
+  great_expectation_validation:
+    cmd: python src/data/data_validation.py --config=params.yaml
+    deps:
+    - src/data/data_validation.py
+    - data/raw/train.csv
+    - data/raw/train_new.csv
+    outs:
+    - great_expectations/exp_json_file.json
+  
   split_data:
     cmd: python src/data/split_data.py --config=params.yaml
     deps:
