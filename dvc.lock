@@ -72,3 +72,19 @@ stages:
     - path: reports/data_and_target_drift_dashboard.html
       md5: 3f6616d53f55f7d882ac16566fd991a9
       size: 6300885
+  great_expectation_validation:
+    cmd: python src/data/data_validation.py --config=params.yaml
+    deps:
+    - path: data/raw/train.csv
+      md5: 9b61c38a459d36244dbf8e6940236371
+      size: 120397
+    - path: data/raw/train_new.csv
+      md5: b3058d1b696ea52f26871f1c8c71cb9c
+      size: 23299
+    - path: src/data/data_validation.py
+      md5: b42ca893c03f7fcb25c9e3b8422eb100
+      size: 3699
+    outs:
+    - path: great_expectations/exp_json_file.json
+      md5: b1a5bd39b07da8f4d7be05576c3bd823
+      size: 966
