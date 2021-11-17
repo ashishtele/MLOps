@@ -1,0 +1,9 @@
+validation_operator_name: my_validation_operator
+batches:
+  - batch_kwargs:
+      path: data/raw/train.csv
+      datasource: data_dir
+      data_asset_name: train
+      reader_method: read_csv
+    expectation_suite_names:
+      - check_raw_data

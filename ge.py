@@ -28,4 +28,6 @@ print(batch.get_expectation_suite())
 batch.save_expectation_suite()
 results = context.run_validation_operator('my_validation_operator', assets_to_validate=[batch])
 
-context.open_data_docs()
+#context.open_data_docs()
+
+context.run_checkpoint(checkpoint_name="my_base_check")

@@ -1,0 +1,52 @@
+name: Great Expectations push
+
+on:
+  push:
+    branches:
+    - master
+    - main
+  pull_request:
+    branches:
+    - master
+    - main
+
+jobs:
+  great_expectations_validation:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Clone the contents of the repository
+    - name: Copy Repository contents
+      uses: actions/checkout@v2
+
+      # Run Great Expectations and deploy Data Docs to Netlify
+      # In this example, we have configured a Checkpoint called "locations.rds.chk".
+    - name: Run Great Expectation Checkpoints
+      id: ge
+      # Use @v0.x instead of @main to pin to a specific version, e.g. @v0.2
+      uses: great-expectations/great_expectations_action@v2
+      with:
+        CHECKPOINTS: "my_base_check"
+
+      # Comment on PR with link to deployed Data Docs if there is a failed Checkpoint, otherwise don't comment.
+    - name: Comment on PR 
+      if: ${{ always() }}
+      uses: actions/github-script@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+            if (process.env.FAILURE_FLAG == 1 ) {
+              msg = `Failed Great Expectations Checkpoint(s) \`${process.env.FAILED_CHECKPOINTS}\` detected for: ${process.env.SHA}.  Corresponding Data Docs have been generated and can be viewed [here](${process.env.URL}).`;
+              console.log(`Message to be emitted: ${msg}`);
+              github.issues.createComment({
+                 issue_number: context.issue.number,
+                 owner: context.repo.owner,
+                 repo: context.repo.repo,
+                 body: msg 
+               });
+            }
+      env:
+        URL: "${{ steps.ge.outputs.netlify_docs_url }}"
+        FAILED_CHECKPOINTS: ${{ steps.ge.outputs.failing_checkpoints }}
+        SHA: ${{ github.sha }}
+        FAILURE_FLAG: ${{ steps.ge.outputs.checkpoint_failure_flag }}
