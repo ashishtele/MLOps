@@ -15,27 +15,15 @@ config_version: 3.0
 # add a new datasource. Read more at https://docs.greatexpectations.io/en/latest/reference/core_concepts/datasource_reference.html
 datasources:
   data_dir:
+    module_name: great_expectations.datasource
     batch_kwargs_generators:
       subdir_reader:
         class_name: SubdirReaderBatchKwargsGenerator
-        base_directory: ../data
-    module_name: great_expectations.datasource
+        base_directory: ../data/raw
     data_asset_type:
       module_name: great_expectations.dataset
       class_name: PandasDataset
     class_name: PandasDatasource
-  output_dir:
-    type: pandas
-    batch_kwargs_generators:
-      default:
-        type: subdir_reader
-        base_directory: ../processed
-        reader_options:
-          sep: ','
-          header: 0
-          engine: python
-    data_asset_type:
-      class_name: PandasDataset
 
 # This config file supports variable substitution which enables: 1) keeping
 # secrets out of source control & 2) environment-based configuration changes
