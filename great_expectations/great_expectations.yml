@@ -66,7 +66,7 @@ plugins_directory: plugins/
 # stores validations and send a slack notification. To read more about
 # customizing and extending these, read: https://docs.greatexpectations.io/en/latest/reference/core_concepts/validation_operators_and_actions.html
 validation_operators:
-  my_validation_operator:
+  action_list_operator:
     # To learn how to configure sending Slack notifications during evaluation
     # (and other customizations), read: https://docs.greatexpectations.io/en/latest/autoapi/great_expectations/validation_operators/index.html#great_expectations.validation_operators.ActionListValidationOperator
     class_name: ActionListValidationOperator

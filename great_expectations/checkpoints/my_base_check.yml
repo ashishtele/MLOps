@@ -1,4 +1,4 @@
-validation_operator_name: my_validation_operator
+validation_operator_name: action_list_operator
 batches:
   - batch_kwargs:
       path: data/raw/train.csv
