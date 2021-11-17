@@ -24,7 +24,7 @@ jobs:
     - name: Run Great Expectation Checkpoints
       id: ge
       # Use @v0.x instead of @main to pin to a specific version, e.g. @v0.2
-      uses: great-expectations/great_expectations_action@v2
+      uses: great-expectations/great_expectations_action@main
       with:
         CHECKPOINTS: "my_base_check"
 
