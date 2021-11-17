@@ -14,21 +14,19 @@ config_version: 3.0
 # You can use the CLI command `great_expectations datasource new` to help you
 # add a new datasource. Read more at https://docs.greatexpectations.io/en/latest/reference/core_concepts/datasource_reference.html
 datasources:
-  data__dir:
-    type: pandas
-    generators:
-      default:
-        type: subdir_reader
-        base_directory: ../data/raw
-        reader_options:
-          sep: ','
-          header: 0
-          engine: python
+  data_dir:
+    batch_kwargs_generators:
+      subdir_reader:
+        class_name: SubdirReaderBatchKwargsGenerator
+        base_directory: ../data
+    module_name: great_expectations.datasource
     data_asset_type:
+      module_name: great_expectations.dataset
       class_name: PandasDataset
-  output__dir:
+    class_name: PandasDatasource
+  output_dir:
     type: pandas
-    generators:
+    batch_kwargs_generators:
       default:
         type: subdir_reader
         base_directory: ../processed
@@ -63,6 +61,24 @@ config_variables_file_path: uncommitted/config_variables.yml
 # used to override and extend Great Expectations.
 plugins_directory: plugins/
 
+# Validation Operators are customizable workflows that bundle the validation of
+# one or more expectation suites and subsequent actions. The example below
+# stores validations and send a slack notification. To read more about
+# customizing and extending these, read: https://docs.greatexpectations.io/en/latest/reference/core_concepts/validation_operators_and_actions.html
+validation_operators:
+  my_validation_operator:
+    # To learn how to configure sending Slack notifications during evaluation
+    # (and other customizations), read: https://docs.greatexpectations.io/en/latest/autoapi/great_expectations/validation_operators/index.html#great_expectations.validation_operators.ActionListValidationOperator
+    class_name: ActionListValidationOperator
+    action_list:
+    - name: store_validation_result
+      action:
+        class_name: StoreValidationResultAction
+    - name: update_data_docs
+      action:
+        class_name: UpdateDataDocsAction
+
+        
 stores:
 # Stores are configurable places to store things like Expectations, Validations
 # Data Docs, and more. These are for advanced users only - most users can simply
