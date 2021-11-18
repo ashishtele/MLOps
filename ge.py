@@ -14,7 +14,7 @@ batch_kwargs = {
     'reader_method': 'read_csv'
 }
 batch = context.get_batch(batch_kwargs, suite)
-print(batch.head())
+#print(batch.head())
 
 # Expect column to exists
 batch.expect_column_to_exist('churn')
@@ -23,10 +23,10 @@ batch.expect_column_values_to_be_of_type('total_day_calls', 'int')
 batch.expect_column_distinct_values_to_be_in_set('churn', ['no', 'yes'])
 
 # print expectation_suite
-print(batch.get_expectation_suite())
+#print(batch.get_expectation_suite())
 
 batch.save_expectation_suite()
-results = context.run_validation_operator('my_validation_operator', assets_to_validate=[batch])
+results = context.run_validation_operator('action_list_operator', assets_to_validate=[batch])
 
 #context.open_data_docs()
 

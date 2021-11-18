@@ -11,3 +11,4 @@ sklearn
 mlflow
 joblib
 flask
+streamlit
