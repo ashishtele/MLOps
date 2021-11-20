@@ -105,17 +105,38 @@ if __name__=="__main__":
     wandb.sklearn.plot_learning_curve(model,train_x,train_y)
     wandb.sklearn.plot_feature_importances(model)
 
+    test_data_at = wandb.Artifact("test_samples_" + str(wandb.run.id), type="Metrics")
+
+    test_table = wandb.Table(columns=["Accuracy","Precision","Recall","F1 Score"])
+    test_table.add_data(accuracy,
+                        precision,
+                        recall,
+                        f1score)
+
+    test_data_at.add(test_table, 'Metrics')
+    wandb.run.log_artifact(test_data_at)
+
+    """
     wandb.log({"accuracy":accuracy,
                 "precision":precision,
                 "recall":recall,
                 "f1score":f1score, 
                 "max_depth":max_depth,
                 "n_estimators":n_estimators})
+    """
+
+    wandb.log({"table": pd.concat([test_y,test_x],axis=1)})
+
+    wandb.sklearn.plot_regressor(model, train_x, test_x, train_y, test_y,  
+                                model_name='rf_model_new_metric')
+
+    wandb.sklearn.plot_confusion_matrix(test_y, y_pred, np.unique(train_y))
 
     wandb.sklearn.plot_classifier(model, 
                               train_x, test_x,
                               train_y, test_y,
                               y_pred, y_probas,
+                              labels = np.unique(train_y),
                               is_binary=True, 
                               model_name='rf_model')
 
