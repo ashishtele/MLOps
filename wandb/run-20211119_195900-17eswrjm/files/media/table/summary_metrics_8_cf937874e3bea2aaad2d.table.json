@@ -1,1 +1,0 @@
-{"columns": ["metric_name", "metric_value", "model_name"], "data": [["accuracy_score", 0.85, "RandomForestClassifier"], ["precision", 0.82, "RandomForestClassifier"], ["recall", 0.85, "RandomForestClassifier"], ["f1_score", 0.82, "RandomForestClassifier"]]}

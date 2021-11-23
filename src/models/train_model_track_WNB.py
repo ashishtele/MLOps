@@ -1,5 +1,5 @@
 """
-This is script is to try W&B in MLOps pipeline.
+This script is to try W&B in MLOps pipeline.
 """
 import json
 import yaml
@@ -8,10 +8,7 @@ import argparse
 import wandb
 import numpy as np
 import pandas as pd
-from urllib.parse import urlparse
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score,recall_score,accuracy_score,precision_score,confusion_matrix,classification_report
 
@@ -19,6 +16,7 @@ import warnings
 from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
+# wandb login with API token
 wandb.login()
 
 def read_params(config_path):
@@ -85,7 +83,7 @@ if __name__=="__main__":
 
     train_x,train_y,test_x,test_y,max_depth,n_estimators=train_and_evaluate(config_path=parsed_args.config)
 
-    # Train the Ridge model
+    # Train the RF model
     model = RandomForestClassifier(max_depth=max_depth,
                                     n_estimators=n_estimators)
     model.fit(train_x, train_y)
@@ -96,14 +94,21 @@ if __name__=="__main__":
     indices = np.argsort(importances)[::-1]
 
     accuracy,precision,recall,f1score = accuracymeasures(test_y,y_pred,'weighted')
-
+   
     # Initialize W&B run
 
     run = wandb.init(project="churn_model", name="rf_model")
 
     # Log the model plots
     wandb.sklearn.plot_learning_curve(model,train_x,train_y)
-    wandb.sklearn.plot_feature_importances(model)
+    wandb.sklearn.plot_roc(test_y, y_probas, np.unique(train_y))
+    wandb.sklearn.plot_confusion_matrix(test_y, y_pred, np.unique(train_y))
+    wandb.sklearn.plot_precision_recall(test_y, y_probas, np.unique(train_y))
+
+    # Class proportions
+    wandb.sklearn.plot_class_proportions(train_y, test_y, np.unique(train_y))
+
+    wandb.sklearn.plot_feature_importances(model, list(train_x.columns), indices)
 
     test_data_at = wandb.Artifact("test_samples_" + str(wandb.run.id), type="Metrics")
 
@@ -116,28 +121,77 @@ if __name__=="__main__":
     test_data_at.add(test_table, 'Metrics')
     wandb.run.log_artifact(test_data_at)
 
-    """
     wandb.log({"accuracy":accuracy,
                 "precision":precision,
                 "recall":recall,
                 "f1score":f1score, 
                 "max_depth":max_depth,
                 "n_estimators":n_estimators})
-    """
 
     wandb.log({"table": pd.concat([test_y,test_x],axis=1)})
-
-    wandb.sklearn.plot_regressor(model, train_x, test_x, train_y, test_y,  
-                                model_name='rf_model_new_metric')
-
-    wandb.sklearn.plot_confusion_matrix(test_y, y_pred, np.unique(train_y))
-
+    
+    """
     wandb.sklearn.plot_classifier(model, 
                               train_x, test_x,
                               train_y, test_y,
                               y_pred, y_probas,
-                              labels = np.unique(train_y),
+                              np.unique(train_y),
                               is_binary=True, 
                               model_name='rf_model')
+    """
+    wandb.finish()
 
+    # Train the RF model
+    model_DT = DecisionTreeClassifier()
+    model_DT.fit(train_x, train_y)
+    y_pred = model_DT.predict(test_x)
+    y_probas = model_DT.predict_proba(test_x)
+
+    importances = model_DT.feature_importances_
+    indices = np.argsort(importances)[::-1]
+
+    accuracy,precision,recall,f1score = accuracymeasures(test_y,y_pred,'weighted')
+
+    # Initialize W&B run for DT model
+
+    run = wandb.init(project="churn_model", name="Decision_tree")
+
+    # Log the model plots
+    wandb.sklearn.plot_learning_curve(model_DT,train_x,train_y)
+    wandb.sklearn.plot_roc(test_y, y_probas, np.unique(train_y))
+    wandb.sklearn.plot_confusion_matrix(test_y, y_pred, np.unique(train_y))
+    wandb.sklearn.plot_precision_recall(test_y, y_probas, np.unique(train_y))
+
+    # Class proportions
+    wandb.sklearn.plot_class_proportions(train_y, test_y, np.unique(train_y))
+
+    wandb.sklearn.plot_feature_importances(model_DT, list(train_x.columns), indices)
+
+    test_data_at = wandb.Artifact("test_samples_" + str(wandb.run.id), type="Metrics")
+
+    test_table = wandb.Table(columns=["Accuracy","Precision","Recall","F1 Score"])
+    test_table.add_data(accuracy,
+                        precision,
+                        recall,
+                        f1score)
+
+    test_data_at.add(test_table, 'Metrics')
+    wandb.run.log_artifact(test_data_at)
+
+    wandb.log({"accuracy":accuracy,
+                "precision":precision,
+                "recall":recall,
+                "f1score":f1score})
+
+    wandb.log({"table": pd.concat([test_y,test_x],axis=1)})
+    
+    """
+    wandb.sklearn.plot_classifier(model, 
+                              train_x, test_x,
+                              train_y, test_y,
+                              y_pred, y_probas,
+                              np.unique(train_y),
+                              is_binary=True, 
+                              model_name='rf_model')
+    """
     wandb.finish()

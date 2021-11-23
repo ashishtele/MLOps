@@ -1,0 +1,24 @@
+{
+    "os": "Windows-10-10.0.19041-SP0",
+    "python": "3.8.7",
+    "heartbeatAt": "2021-11-23T01:18:56.124933",
+    "startedAt": "2021-11-23T01:18:51.393379",
+    "docker": null,
+    "gpu": "GeForce GTX 950M",
+    "gpu_count": 1,
+    "cpu_count": 4,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "src/models/train_model_track_WNB.py",
+    "codePath": "src\\models\\train_model_track_WNB.py",
+    "git": {
+        "remote": "https://github.com/ashishtele/churn_model.git",
+        "commit": "d038a1a90c4c12ed86ce7b3b3e372f105bbc179c"
+    },
+    "email": "sale.ashish.tele@gmail.com",
+    "root": "C:/Users/ashis/OneDrive/Desktop/MLOps/churn_model",
+    "host": "DESKTOP-GI2PLS2",
+    "username": "ashis",
+    "executable": "C:\\Users\\ashis\\AppData\\Local\\Programs\\Python\\Python38\\python.exe"
+}

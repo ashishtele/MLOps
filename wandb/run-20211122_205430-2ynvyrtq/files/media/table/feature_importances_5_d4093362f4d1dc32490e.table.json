@@ -1,0 +1,1 @@
+{"columns": ["feature_names", "importances"], "data": [["number_customer_service_calls", 0.26927174714057744], ["total_eve_charge", 0.1777803247313078], ["total_eve_minutes", 0.17700033158914089], ["total_intl_minutes", 0.15926524565073644], ["total_day_calls", 0.15693498663981992], ["number_vmail_messages", 0.05974736424841753]]}

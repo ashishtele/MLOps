@@ -52,3 +52,12 @@ stages:
     - data/raw/train_new.csv
     outs:
     - reports/data_and_target_drift_dashboard.html
+
+  wand_model_track:
+    cmd: python src/models/train_model_track_WNB.py --config=params.yaml
+    deps:
+    - data/processed/churn_train.csv
+    - data/processed/churn_test.csv
+    - src/models/train_model_track_WNB.py
+    outs:
+    - wandb
