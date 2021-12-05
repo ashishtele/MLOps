@@ -30,6 +30,11 @@ def read_params(config_path):
     return config
 
 def accuracymeasures(y_test,predictions,avg_method):
+    """
+    calculate accuracy measures
+    input: y_test, predictions, avg_method
+    output: accuracy measures
+    """
     accuracy = accuracy_score(y_test, predictions)
     precision = precision_score(y_test, predictions, average=avg_method)
     recall = recall_score(y_test, predictions, average=avg_method)
@@ -51,7 +56,7 @@ def accuracymeasures(y_test,predictions,avg_method):
 
     return accuracy,precision,recall,f1score
 
-def get_feat_and_target(df,target):
+def get_featatures_and_target(df,target):
     """
     Get features and target variables seperately from given dataframe and target 
     input: dataframe and target column
@@ -61,7 +66,12 @@ def get_feat_and_target(df,target):
     y=df[[target]]
     return x,y    
 
-def train_and_evaluate(config_path):
+def split_data(config_path):
+    """
+    split data into train and test
+    input: config_path
+    output: train and test dataframes
+    """
     config = read_params(config_path)
     train_data_path = config["processed_data_config"]["train_data_csv"]
     test_data_path = config["processed_data_config"]["test_data_csv"]
@@ -71,8 +81,8 @@ def train_and_evaluate(config_path):
 
     train = pd.read_csv(train_data_path, sep=",")
     test = pd.read_csv(test_data_path, sep=",")
-    train_x,train_y=get_feat_and_target(train,target)
-    test_x,test_y=get_feat_and_target(test,target)
+    train_x,train_y=get_featatures_and_target(train,target)
+    test_x,test_y=get_featatures_and_target(test,target)
 
     return train_x,train_y,test_x,test_y,max_depth,n_estimators
 
@@ -81,7 +91,7 @@ if __name__=="__main__":
     args.add_argument("--config", default="params.yaml")
     parsed_args = args.parse_args()
 
-    train_x,train_y,test_x,test_y,max_depth,n_estimators=train_and_evaluate(config_path=parsed_args.config)
+    train_x,train_y,test_x,test_y,max_depth,n_estimators=split_data(config_path=parsed_args.config)
 
     # Train the RF model
     model = RandomForestClassifier(max_depth=max_depth,
@@ -141,7 +151,7 @@ if __name__=="__main__":
     """
     wandb.finish()
 
-    # Train the RF model
+    # Train the Decision tree classifier model
     model_DT = DecisionTreeClassifier()
     model_DT.fit(train_x, train_y)
     y_pred = model_DT.predict(test_x)
