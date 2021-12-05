@@ -1,4 +1,4 @@
-churn_model
+Churn Model
 ==============================
 
 MLOps Toy Example End to End
@@ -62,3 +62,5 @@ Project Organization
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+
+The original scaffold is taken from a great article by [Shanaka](https://medium.com/@shanakachathuranga/end-to-end-machine-learning-pipeline-with-mlops-tools-mlflow-dvc-flask-heroku-evidentlyai-github-c38b5233778c). A great post by him summarizing Krish Naik's youtube channel. 
