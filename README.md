@@ -1,7 +1,7 @@
 Churn Model
 ==============================
 
-MLOps Toy Example End to End 🔥
+MLOps Toy Example End to End ! 🔥
 
 You might find below links useful
 ==============================
