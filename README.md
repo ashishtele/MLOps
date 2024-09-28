@@ -12,7 +12,7 @@ You might find the links below useful
 5. [Dataset](https://www.kaggle.com/c/customer-churn-prediction-2020/data?select=train.csv)
 
 Project Organization
-------------
+-------------
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
